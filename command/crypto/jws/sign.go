@@ -186,6 +186,7 @@ func signAction(ctx *cli.Context) error {
 		return errs.TooManyArguments(ctx)
 	}
 
+	fmt.Printf("payload = %+v\n", payload)
 	isSubtle := ctx.Bool("subtle")
 	alg := ctx.String("alg")
 
