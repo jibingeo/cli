@@ -100,12 +100,17 @@ func ParseKey(filename string, opts ...Option) (*JSONWebKey, error) {
 	}
 
 	// Validate key id
-	if ctx.kid != "" && jwk.KeyID != "" && ctx.kid != jwk.KeyID {
-		return nil, errors.Errorf("kid %s does not match the kid on %s", ctx.kid, filename)
-	}
-	if jwk.KeyID == "" {
+	//if ctx.kid != "" && jwk.KeyID != "" && ctx.kid != jwk.KeyID {
+	//	return nil, errors.Errorf("kid %s does not match the kid on %s", ctx.kid, filename)
+	//}
+	if ctx.kid != "" {
 		jwk.KeyID = ctx.kid
 	}
+	/*
+		if jwk.KeyID == "" {
+			jwk.KeyID = ctx.kid
+		}
+	*/
 	if jwk.Use == "" {
 		jwk.Use = ctx.use
 	}

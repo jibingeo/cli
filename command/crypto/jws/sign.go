@@ -97,6 +97,14 @@ to the key used to digitally sign the JWS. This key is represented as a JSON
 Web Key (JWK). Use of <jwk> is optional.`,
 			},
 			cli.StringFlag{
+				Name:  "nonce",
+				Usage: `The "nonce" (nonce) Header Parameter is a replay-nonce.`,
+			},
+			cli.StringFlag{
+				Name:  "url",
+				Usage: `The "url" (url) Header Parameter is a url.`,
+			},
+			cli.StringFlag{
 				Name: "typ, type",
 				Usage: `The "typ" (type) Header Parameter is used by JWS applications to declare the
 media type of this complete JWS. This is intended for use by the application
@@ -259,6 +267,12 @@ func signAction(ctx *cli.Context) error {
 	if ctx.Bool("jwk") {
 		so.WithHeader("jwk", jwk.Public())
 	}
+	if ctx.IsSet("nonce") {
+		so.WithHeader("nonce", ctx.String("nonce"))
+	}
+	if ctx.IsSet("url") {
+		so.WithHeader("url", ctx.String("url"))
+	}
 
 	signer, err := jose.NewSigner(jose.SigningKey{
 		Algorithm: jose.SignatureAlgorithm(jwk.Algorithm),
@@ -272,6 +286,7 @@ func signAction(ctx *cli.Context) error {
 	if err != nil {
 		return errors.Errorf("error signing payload: %s", strings.TrimPrefix(err.Error(), "square/go-jose: "))
 	}
+	fmt.Printf("signed = %+v\n", signed)
 
 	raw, err := signed.CompactSerialize()
 	if err != nil {

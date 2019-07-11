@@ -3,6 +3,7 @@ package certificate
 import (
 	"bytes"
 	"crypto/x509"
+	"encoding/base64"
 	"encoding/json"
 	"encoding/pem"
 	"fmt"
@@ -306,6 +307,7 @@ func inspectCertificates(ctx *cli.Context, blocks []*pem.Block) error {
 
 func inspectCertificateRequest(ctx *cli.Context, block *pem.Block) error {
 	format, short := ctx.String("format"), ctx.Bool("short")
+	fmt.Printf("CSR = %s\n", base64.RawURLEncoding.EncodeToString(block.Bytes))
 	switch format {
 	case "text":
 		var text string
